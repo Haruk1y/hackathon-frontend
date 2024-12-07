@@ -14,18 +14,26 @@ const apiClient = axios.create({
 
 // リクエストインターセプター
 apiClient.interceptors.request.use(async (config) => {
-  const auth = getAuth();
-  const user = auth.currentUser;
-  
-  if (user) {
-    const token = await user.getIdToken();
-    config.headers.Authorization = `Bearer ${token}`;
-  }
-  
-  return config;
-}, (error) => {
-  return Promise.reject(error);
-});
+    const auth = getAuth();
+    const user = auth.currentUser;
+    
+    if (user) {
+      try {
+        const token = await user.getIdToken();
+        // 修正: Bearerトークンの形式で正しく設定
+        config.headers.Authorization = `Bearer ${token}`;
+        console.log("Sending token:", token); // デバッグ用
+      } catch (error) {
+        console.error("Error getting token:", error);
+      }
+    } else {
+      console.log("No current user"); // デバッグ用
+    }
+    
+    return config;
+  }, (error) => {
+    return Promise.reject(error);
+  });
 
 // レスポンスインターセプター
 apiClient.interceptors.response.use(
