@@ -10,7 +10,8 @@ const apiClient = axios.create({
     headers: {
         'Content-Type': 'application/json',
     },
-    withCredentials: true, // CORS認証を有効化
+    // credentialsモードを変更
+    withCredentials: false
 });
 
 // リクエストインターセプター
@@ -20,17 +21,17 @@ apiClient.interceptors.request.use(async (config) => {
         const user = auth.currentUser;
         
         if (user) {
-            const token = await user.getIdToken(true); // forceRefresh=true
-            config.headers.Authorization = `Bearer ${token}`;
+            const token = await user.getIdToken(true);
+            if (token) {
+                config.headers.Authorization = `Bearer ${token}`;
+            }
         }
         
         return config;
     } catch (error) {
-        console.error('Error in request interceptor:', error);
+        console.error('Auth error:', error);
         return Promise.reject(error);
     }
-}, (error) => {
-    return Promise.reject(error);
 });
 
 // レスポンスインターセプター
