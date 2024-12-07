@@ -22,7 +22,7 @@ export const PostForm: React.FC = () => {
         status: 'success',
         duration: 3000,
       });
-      reset(); // フォームをリセット
+      reset();
     } catch (error) {
       toast({
         title: '投稿の作成に失敗しました',
@@ -33,7 +33,7 @@ export const PostForm: React.FC = () => {
   };
 
   return (
-    <Box p={4} borderWidth="1px" borderRadius="lg">
+    <Box p={4} borderWidth="1px" borderRadius="lg" width="100%" bg="white">
       <form onSubmit={handleSubmit(onSubmit)}>
         <VStack spacing={4}>
           <Textarea
@@ -46,16 +46,20 @@ export const PostForm: React.FC = () => {
             })}
             placeholder="いまどうしてる？"
             resize="vertical"
+            minHeight="120px"  // 高さを増加
+            fontSize="lg"      // フォントサイズを大きく
+            p={4}             // パディングを追加
           />
           {errors.content && (
-            <Box color="red.500" fontSize="sm">
+            <Box color="red.500" fontSize="sm" width="100%">
               {errors.content.message}
             </Box>
           )}
           <Button
             type="submit"
             colorScheme="blue"
-            width="full"
+            width="100%"
+            size="lg"        // ボタンサイズを大きく
             isLoading={isSubmitting}
           >
             投稿する
