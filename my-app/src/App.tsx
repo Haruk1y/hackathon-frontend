@@ -6,12 +6,13 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { Login } from './pages/Login.tsx';
 import { Signup } from './pages/Signup.tsx';
 import { Home } from './pages/Home.tsx';
-import { useAuth } from './hooks/useAuth.ts';  // importの修正
+import { PostDetail } from './pages/PostDetail.tsx';  // 追加
+import { useAuth } from './hooks/useAuth.ts';
 
 const queryClient = new QueryClient();
 
 const ProtectedRoute: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-  const { user, loading } = useAuth();  // フックの使用
+  const { user, loading } = useAuth();
   
   if (loading) {
     return <div>Loading...</div>;
@@ -37,6 +38,15 @@ const App: React.FC = () => {
               element={
                 <ProtectedRoute>
                   <Home />
+                </ProtectedRoute>
+              }
+            />
+            {/* 投稿詳細ページのルートを追加 */}
+            <Route
+              path="/posts/:postId"
+              element={
+                <ProtectedRoute>
+                  <PostDetail />
                 </ProtectedRoute>
               }
             />
