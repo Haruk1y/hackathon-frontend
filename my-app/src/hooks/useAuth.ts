@@ -15,6 +15,8 @@ export const useAuth = () => {  // default exportを削除し、named exportに�
     const unsubscribe = auth.onAuthStateChanged(async (firebaseUser) => {
       if (firebaseUser) {
         try {
+          const token = await firebaseUser.getIdToken();
+          console.log('Firebase token:', token); // デバッグ用
           const response = await apiClient.post('/auth/login');
           setUser(response.data);
         } catch (err) {
@@ -26,7 +28,7 @@ export const useAuth = () => {  // default exportを削除し、named exportに�
       }
       setLoading(false);
     });
-
+  
     return () => unsubscribe();
   }, []);
 
