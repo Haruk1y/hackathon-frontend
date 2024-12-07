@@ -8,6 +8,7 @@ import { Signup } from './pages/Signup.tsx';
 import { Home } from './pages/Home.tsx';
 import { PostDetail } from './pages/PostDetail.tsx';  // 追加
 import { useAuth } from './hooks/useAuth.ts';
+import { Layout } from './components/common/Layout.tsx';
 
 const queryClient = new QueryClient();
 
@@ -22,7 +23,7 @@ const ProtectedRoute: React.FC<{ children: React.ReactNode }> = ({ children }) =
     return <Navigate to="/login" />;
   }
   
-  return <>{children}</>;
+  return <Layout>{children}</Layout>;  // Layoutでラップ
 };
 
 const App: React.FC = () => {
@@ -41,7 +42,6 @@ const App: React.FC = () => {
                 </ProtectedRoute>
               }
             />
-            {/* 投稿詳細ページのルートを追加 */}
             <Route
               path="/posts/:postId"
               element={
